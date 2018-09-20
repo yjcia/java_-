@@ -8,7 +8,6 @@
         System.out.println(a == b); // true
     }
 
-
 ```
 >说明：
 在上限和下限范围之内声明`Integer`的时候直接总`cache`中获取,
