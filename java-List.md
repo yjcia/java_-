@@ -5,6 +5,8 @@
 - List接口继承Collection接口
 - Queue接口继承Collection接口
 - Collection接口继承Iterable接口
+- Collection是所有集合类的根接口
+- Collections是提供集合操作的工具类
   
 ## List
 >说明:
@@ -23,7 +25,20 @@
         System.out.println(list.size()); //2
     }
 ```
-4.简单的速度测试：
+4. ArrayList线程不安全，LinkedList线程不安全，
+   </br>
+   vector线程安全方法签名包含synchronized关键字
+   </br>
+   ***ArrayList,LinkedList如何转为线程安全？***
+   </br>
+   ```java
+   List<Map<String,Object>> dataList 
+        = Collections.synchronizedList(new ArrayList<Map<String,Object>>());
+   ```
+   
+
+
+## 简单的速度测试：
 >后方插入
 ```java
     @Test
