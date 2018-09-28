@@ -123,3 +123,24 @@ CopyOnWrite 容器即写时复制的容器。通俗的理解是当我们往一�
 **数据一致性问题**
 </br>
 CopyOnWrite 容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用 CopyOnWrite 容器。
+
+### Fail Fast 问题
+```java
+    //单线程
+    @Test
+    public void testFailFast() {
+        List<String> demoList = new ArrayList<String>();
+        demoList.add("zhangsan");
+        demoList.add("lisi");
+        Iterator iter = demoList.iterator();
+        int count = 0;
+        while(iter.hasNext()){
+            if(count == 1){
+                demoList.remove(1); //java.util.ConcurrentModificationException
+            }
+            System.out.println(iter.next());
+            count ++;
+        }
+        System.out.println(demoList);
+    }
+```
