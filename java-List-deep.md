@@ -136,11 +136,30 @@ CopyOnWrite 容器只能保证数据的最终一致性，不能保证数据的�
         int count = 0;
         while(iter.hasNext()){
             if(count == 1){
-                demoList.remove(1); //java.util.ConcurrentModificationException
+                //这里要使用Iterator的remove方法移除当前对象，如果使用List的remove方法，则同样会出现ConcurrentModificationException    
+                demoList.remove(1); 
+                //这样不报错,Iterator.remove() 方法会在删除当前迭代对象的同时维护索引的一致性
+                //iter.remove();
+                
             }
             System.out.println(iter.next());
             count ++;
         }
         System.out.println(demoList);
+    }
+    //使用CopyOnWriteArrayList，不报错
+    @Test
+    public void testFailFast2() {
+        Person p1 = new Person("zhangsan");
+        Person p2 = new Person("lisi");
+        List<Person> personList = new CopyOnWriteArrayList<Person>();
+        personList.add(p1);
+        personList.add(p2);
+        for(Person p:personList){
+            if(p.getName().equals("lisi")){
+                personList.remove(p);
+            }
+        }
+        System.out.println(personList);
     }
 ```
