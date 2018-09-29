@@ -38,7 +38,7 @@
 
 >**JDK 1.7** - 链地址法
 </br>
-<!-- <img src="https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/hashmap-link.jpg" width="500px"/> -->
+<img src="https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/hashmap-link.jpg" width="500px"/>
 ```java
     //每个Entry实现Map.Entry
     //每个Entry包含下一个节点的引用，Entry<K,V> next
@@ -54,7 +54,7 @@
 
 >**JDK 1.8** - 链地址法 + 红黑树
 </br>
-<!-- <img src="https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/hashmap-rb-link.jpg" width="500px"/> -->
+<img src="https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/hashmap-rb-link.jpg" width="500px"/>
 ```java
     //每个Node实现Map.Entry
     //每个Node包含下一个节点的引用，Node<K,V> next
@@ -68,7 +68,8 @@
 </br>
 在 JDK1.8 版本中，对数据结构做了进一步的优化，引入了红黑树。而当链表长度太长（默认超过8）时，链表就转换为红黑树，利用红黑树快速增删改查的特点提高 HashMap 的性能，其中会用到红黑树的插入、删除、查找等算法。
 ## HashMap Put (JDK 8)
-<img src="https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/hashmap-put.png" width="500px">
+<img src="https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/hashmap-put.png" width="600px">
+
 ## HashMap 扩容机制（JDK 8）
 >说明：
 - 在 HashMap 中，<font color="orange">哈希桶数组 table 的长度 length 大小必须为 2的n次方（一定是合数）</font>，这是一种非常规的设计，常规的设计是把桶的大小设计为素数。<font color="orange">相对来说素数导致冲突的概率要小于合数.</font>
@@ -84,3 +85,38 @@
 |loadFactor|装载因子，table 能够使用的比例，threshold = capacity * loadFactor。|
 |TREEIFY_THRESHOLD|树化阀值，哈希桶中的节点个数大于该值（默认为8）的时候将会被转为红黑树行存储结构。
 |UNTREEIFY_THRESHOLD|非树化阀值，小于该值（默认为 6）的时候将再次改为单链表的格式存储
+
+```java
+    void resize(int newCapacity) {   //传入新的容量
+        Entry[] oldTable = table;    //引用扩容前的Entry数组
+        int oldCapacity = oldTable.length;         
+        if (oldCapacity == MAXIMUM_CAPACITY) {  //扩容前的数组大小如果已经达到最大(2^30)了
+            threshold = Integer.MAX_VALUE; //修改阈值为int的最大值(2^31-1)，这样以后就不会扩容了
+            return;
+        }
+    
+        Entry[] newTable = new Entry[newCapacity];  //初始化一个新的Entry数组
+        transfer(newTable);                         //！！将数据转移到新的Entry数组里
+        table = newTable;                           //HashMap的table属性引用新的Entry数组
+        threshold = (int)(newCapacity * loadFactor);//修改阈值
+    }
+```
+```java
+    void transfer(Entry[] newTable) {
+        Entry[] src = table;                   //src引用了旧的Entry数组
+        int newCapacity = newTable.length;
+        for (int j = 0; j < src.length; j++) { //遍历旧的Entry数组
+            Entry<K,V> e = src[j];             //取得旧Entry数组的每个元素
+            if (e != null) {
+                src[j] = null;//释放旧Entry数组的对象引用（for循环后，旧的Entry数组不再引用任何对象）
+                do {
+                    Entry<K,V> next = e.next;
+                    int i = indexFor(e.hash, newCapacity); //！！重新计算每个元素在数组中的位置
+                    e.next = newTable[i]; //标记[1]
+                    newTable[i] = e;      //将元素放在数组上
+                    e = next;             //访问下一个Entry链上的元素
+                } while (e != null);
+            }
+        }
+    }
+```
