@@ -35,7 +35,7 @@ LinkedHashMap 的结构图，
 主体部分跟 HashMap 完全一样，多了 header 指向双向链表的头部（是一个哑元），该双向链表的迭代顺序就是 entry 的插入顺序
 </br>
 </br>
-<!-- ![LinkedHashMap](https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/LinkedHashMap_base.png) -->
+![LinkedHashMap](https://github.com/frank-lam/2019_campus_apply/raw/master/notes/pics/LinkedHashMap_base.png)
 
 ## TreeSet
 >说明：
@@ -143,3 +143,6 @@ LinkedHashMap 的结构图，
         }
     }
 ```
+>4.补充
+</br>
+TreeSet判断两个对象相等的唯一标准是，compareTo=0
