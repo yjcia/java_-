@@ -1,5 +1,7 @@
 # Java Integer 知识梳理
+
 ## Integer '==' 比较
+
 ```java
     @Test
     public void testInteger(){
@@ -9,6 +11,7 @@
     }
 
 ```
+
 >说明：
 在上限和下限范围之内声明`Integer`的时候直接总`cache`中获取,
 反之`new Integer`获取
@@ -20,6 +23,7 @@ Integer 缓存上限：
 默认：`h=127`
 </br>
 参数设置参考下方代码
+
 ```java
 String integerCacheHighPropValue =
     sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
@@ -42,7 +46,9 @@ if (integerCacheHighPropValue != null) {
         return new Integer(i);
     }
 ```
+
 ## Integer 和 int 比较
+
 ```java
     @Test
     public void testIntegerInt(){
@@ -52,6 +58,7 @@ if (integerCacheHighPropValue != null) {
     }
     //一个Integer 与 int比较，先将Integer转换成int类型，再做值比较
 ```
+
 ```java
     @Test
     public void testIntegerInt(){
@@ -62,6 +69,7 @@ if (integerCacheHighPropValue != null) {
     }
     //原因同上
 ```
+
 ```java
     @Test
     public void testIntegerInt(){

@@ -1,5 +1,7 @@
 # Java List 知识梳理
+
 >说明:
+
 - collection 是一个interface
 - Set接口继承Collection接口
 - List接口继承Collection接口
@@ -9,13 +11,13 @@
 - Collections是提供集合操作的工具类
   
 ## List
+
 >说明:
-</br>
+
 1. 有序 ：`An ordered collection`
-</br>
 2. 允许重复 ：`lists typically allow duplicate elements`
-</br>
 3. 允许null值插入，示例代码如下：
+
 ```java
     @Test
     public void testList(){
@@ -25,21 +27,23 @@
         System.out.println(list.size()); //2
     }
 ```
-4. ArrayList线程不安全，LinkedList线程不安全，
+
+1. ArrayList线程不安全，LinkedList线程不安全，
    </br>
    vector线程安全方法签名包含synchronized关键字
    </br>
    ***ArrayList,LinkedList如何转为线程安全？***
    </br>
+
    ```java
    List<Map<String,Object>> dataList 
         = Collections.synchronizedList(new ArrayList<Map<String,Object>>());
    ```
-   
-
 
 ## 简单的速度测试：
+
 >后方插入
+
 ```java
     @Test
     public void testList2() {
@@ -84,7 +88,9 @@
     // 1亿 54245ms
     // 2亿 很慢很慢
 ```
+
 >前方插入
+
 ```java
     @Test
     public void testList2() {
@@ -119,9 +125,11 @@
     // 5百万 4114ms
     // 1千万 9033ms
 ```
+
 >总结：后插ArrayList快，前插LinkedList快，因为只要断链不需要移动整体。
 
->读取速度
+## 读取速度
+
 ```java
     @Test
     public void testList2() {
@@ -167,4 +175,5 @@
     // 10000 170ms
     // 剩下不用比了
 ```
+
 >总结：ArrayList底层基于数组，数组有下标查找快，LinkedList底层基于链表，查找较慢

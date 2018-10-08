@@ -1,5 +1,7 @@
 # Java List 深入
-### RandomAccess 接口
+
+## RandomAccess 接口
+
 ```java
 /**
 * 
@@ -17,25 +19,30 @@ int binarySearch(List<? extends Comparable<? super T>> list, T key) {
             return Collections.iteratorBinarySearch(list, key);
     }
 ```
+
 ```java
 //ArrayList 实现RandomAccess接口
 public class ArrayList<E> extends AbstractList<E>
         implements List<E>, RandomAccess, Cloneable, java.io.Serializable
 ```  
+
 ```java
 //LinkedList 没有实现RandomAccess接口
 public class LinkedList<E>
     extends AbstractSequentialList<E>
     implements List<E>, Deque<E>, Cloneable, java.io.Serializable
 ```
-### RandomAccess接口作用
+
+## RandomAccess接口作用
+
 >说明
 </br>
 标志接口,只要List集合实现这个接口，就能支持快速随机访问
 使用</br>`instanceof`来判断
 `list instanceof RandomAccess`
 
-### 算法练习题：二分法查找
+## 算法练习题：二分法查找
+
 ```java
     @Test
     public void testBinarySearch() {
@@ -68,7 +75,9 @@ public class LinkedList<E>
         return -1;
     }
 ```
-### List 扩容
+
+## List 扩容
+
 `DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}`
 </br>
 `DEFAULT_CAPACITY = 10`
@@ -76,6 +85,7 @@ public class LinkedList<E>
 添加元素时使用 ensureCapacityInternal() 方法来保证容量足够，如果不够时，需要使用 grow() 方法进行扩容，新容量的大小为 oldCapacity + (oldCapacity >> 1)，也就是旧容量的 1.5 倍。
 
 扩容操作需要调用 Arrays.copyOf() 把原数组整个复制到新数组中，这个操作代价很高，因此最好在创建 ArrayList 对象时就指定大概的容量大小，减少扩容操作的次数。
+
 ```java
     /**
      * Increases the capacity to ensure that it can hold at least the
@@ -95,6 +105,7 @@ public class LinkedList<E>
         elementData = Arrays.copyOf(elementData, newCapacity);
     }
 ```
+
 ```java
     //最大到Integer.MAX_VALUE 21亿
     private static int hugeCapacity(int minCapacity) {
@@ -105,12 +116,13 @@ public class LinkedList<E>
             MAX_ARRAY_SIZE;
     }
 ```
-### CopyOnWriteArrayList
+
+## CopyOnWriteArrayList
+
 `List<String> list = new CopyOnWriteArrayList<>();`
 >说明
 </br>
 CopyOnWrite 容器即写时复制的容器。通俗的理解是当我们往一个容器添加元素的时候，不直接往当前容器添加，而是先将当前容器进行 Copy，复制出一个新的容器，然后新的容器里添加元素，添加完元素之后，再将原容器的引用指向新的容器。这样做的好处是我们可以对 CopyOnWrite 容器进行并发的读，而不需要加锁，因为当前容器不会添加任何元素。所以 CopyOnWrite 容器也是一种读写分离的思想，读和写不同的容器。
-
 >缺点
 </br>
 **内存占用问题**
@@ -124,7 +136,8 @@ CopyOnWrite 容器即写时复制的容器。通俗的理解是当我们往一�
 </br>
 CopyOnWrite 容器只能保证数据的最终一致性，不能保证数据的实时一致性。所以如果你希望写入的的数据，马上能读到，请不要使用 CopyOnWrite 容器。
 
-### Fail Fast 问题
+## Fail Fast 问题
+
 ```java
     //单线程
     @Test
@@ -140,7 +153,6 @@ CopyOnWrite 容器只能保证数据的最终一致性，不能保证数据的�
                 demoList.remove(1); 
                 //这样不报错,Iterator.remove() 方法会在删除当前迭代对象的同时维护索引的一致性
                 //iter.remove();
-                
             }
             System.out.println(iter.next());
             count ++;
